@@ -84,7 +84,14 @@ class PageSectionWriteSerializer(serializers.ModelSerializer):
 class PageListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Page
-        fields = ('id', 'slug', 'title', 'order')
+        fields = ('id', 'slug', 'title', 'order', 'show_in_nav')
+
+
+class PageWriteSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Page
+        fields = ('id', 'slug', 'title', 'meta_description', 'order', 'show_in_nav')
+        read_only_fields = ('id',)
 
 
 class PageDetailSerializer(serializers.ModelSerializer):
@@ -92,7 +99,7 @@ class PageDetailSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Page
-        fields = ('id', 'slug', 'title', 'meta_description', 'order', 'sections')
+        fields = ('id', 'slug', 'title', 'meta_description', 'order', 'show_in_nav', 'sections')
 
     def get_sections(self, obj):
         lang = self.context.get('lang', 'en')

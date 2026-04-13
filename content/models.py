@@ -27,6 +27,7 @@ class Page(models.Model):
     title = models.CharField(max_length=200)
     meta_description = models.TextField(blank=True, default='')
     order = models.PositiveIntegerField(default=0)
+    show_in_nav = models.BooleanField(default=True)
 
     class Meta:
         db_table = 'pages'
@@ -62,6 +63,7 @@ class PageSection(models.Model):
         ('text_block', 'Text Block'),
         ('card_grid', 'Card Grid'),
         ('card_carousel', 'Card Carousel'),
+        ('video_block', 'Video Block'),
     ]
 
     page = models.ForeignKey(Page, on_delete=models.CASCADE, related_name='sections')
@@ -88,7 +90,7 @@ class SectionItem(models.Model):
     description = models.TextField(blank=True, default='')
     image = models.ImageField(upload_to='items/', blank=True, null=True)
     icon_name = models.CharField(max_length=50, blank=True, default='')
-    link_url = models.URLField(max_length=500, blank=True, default='')
+    link_url = models.CharField(max_length=500, blank=True, default='')
     link_text = models.CharField(max_length=100, blank=True, default='')
     extra_data = models.JSONField(default=dict, blank=True)
 

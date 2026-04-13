@@ -12,7 +12,7 @@ from .models import User, Page, PageSection, SectionItem, SiteSettings
 from .permissions import IsAdminUser, IsSuperAdmin
 from .serializers import (
     UserSerializer, UserCreateSerializer, LoginSerializer,
-    PageListSerializer, PageDetailSerializer,
+    PageListSerializer, PageDetailSerializer, PageWriteSerializer,
     PageSectionSerializer, PageSectionWriteSerializer,
     SectionItemSerializer, SiteSettingsSerializer,
 )
@@ -83,6 +83,19 @@ def _parse_json_field(data, field_name):
         except (json.JSONDecodeError, TypeError):
             return {}
     return value if value else {}
+
+
+# ── Admin: Pages ─────────────────────────────────────────────────────
+
+class AdminPageViewSet(viewsets.ModelViewSet):
+    queryset = Page.objects.all()
+    permission_classes = [IsAuthenticated, IsAdminUser]
+    parser_classes = [JSONParser, MultiPartParser, FormParser]
+
+    def get_serializer_class(self):
+        if self.action in ('create', 'update', 'partial_update'):
+            return PageWriteSerializer
+        return PageListSerializer
 
 
 # ── Admin: Sections ──────────────────────────────────────────────────

@@ -3,6 +3,7 @@ from rest_framework.routers import DefaultRouter
 from . import views
 
 router = DefaultRouter()
+router.register(r'admin/pages', views.AdminPageViewSet, basename='admin-pages')
 router.register(r'admin/sections', views.AdminSectionViewSet, basename='admin-sections')
 router.register(r'admin/items', views.AdminItemViewSet, basename='admin-items')
 router.register(r'admin/users', views.UserViewSet, basename='admin-users')
@@ -10,6 +11,9 @@ router.register(r'admin/users', views.UserViewSet, basename='admin-users')
 urlpatterns = [
     path('auth/login/', views.login_view),
     path('auth/me/', views.me_view),
+    # Алиас под префикс /api/cms/ (ожидается фронтом CMS)
+    path('cms/auth/login/', views.login_view),
+    path('cms/auth/me/', views.me_view),
 
     path('pages/', views.PageListView.as_view()),
     path('pages/<slug:slug>/', views.PageDetailView.as_view()),
