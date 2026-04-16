@@ -159,8 +159,11 @@ class AdminItemViewSet(viewsets.ModelViewSet):
         serializer.save(extra_data=extra_data)
 
     def perform_update(self, serializer):
-        extra_data = _parse_json_field(self.request.data, 'extra_data')
-        serializer.save(extra_data=extra_data)
+        if 'extra_data' in self.request.data:
+            extra_data = _parse_json_field(self.request.data, 'extra_data')
+            serializer.save(extra_data=extra_data)
+        else:
+            serializer.save()
 
 
 # ── Admin: Upload ────────────────────────────────────────────────────
